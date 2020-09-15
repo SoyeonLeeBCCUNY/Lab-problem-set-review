@@ -1,0 +1,48 @@
+---
+title: "Lab problem set review"
+author: "Soyeon Lee"
+date: "9/14/2020"
+output: html_document
+---
+
+```{r}
+sum(seq(100,1000,100))
+```
+```{r}
+a<-seq(100,1000,100)
+the_sum<-0
+for (i in a){
+  the_sum<-the_sum+i
+}
+the_sum
+```
+```{r}
+sum(c(1,3,2,4,3,5,4,3,4,5,6,5,6,7,6,5,6,5,4,3,4,5))
+```
+```{r}
+seq_generator<-function()
+
+```
+
+```{r}
+
+```
+
+```{r}
+seq(1,10,1)
+sum(seq(1,10,1))
+```
+```{r}
+seq_sum<-function(start,end,interval){
+  the_seq<-seq(start,end,interval)
+  the_sum<-sum(the_seq)
+  return(list(the_seq,the_sum))
+}
+seq_sum(1,10,1)
+```
+```{r}
+x<-c(1,2,3,4,5)
+sum(x)/length(x)
+
+```
+
