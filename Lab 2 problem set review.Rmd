@@ -1,0 +1,12 @@
+---
+title: "Lab 2 problem set review"
+author: "Soyeon Lee"
+date: "9/24/2020"
+output: html_document
+---
+
+
+```{r}
+gapminder_data<-read.table("open_data/gapminder.csv",sep=",", header=TRUE)
+```
+
