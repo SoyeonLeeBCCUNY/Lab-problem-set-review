@@ -69,4 +69,156 @@ scores-mean(scores)
 sum(scores-mean(scores))
 round(sum(scores-mean(scores)))
 ```
+```{r}
+scores<-c(1,64,5,4,3,4,5,6,7,8,3)
+```
+
+for(i innumbers_to_test ){
+```{r}
+sum(scores-1)
+sum(scores-2)
+sum(scores-3)
+sum(scores-4)
+sum(scores-5)
+sum(scores-6)
+```
+```{r}
+sort(scores)
+scores<-sort(scores)
+scores
+
+numbers_to_test<-min(scores):max(scores)
+
+sum_dev<-c()
+
+for(i in numbers_to_test){
+  sum_dev[i]<-sum(scores-i)
+}
+sum_dev
+```
+```{r}
+plot(sum_dev)
+```
+```{r}
+plot(abs(sum_dev))
+```
+```{r}
+which(sum_dev==0)
+```
+```{r}
+sum_dev[10]
+```
+```{r}
+which(sum_dev==0)
+sum_dev[which(sum_dev==0)]
+```
+```{r}
+scores<-1:20
+
+sum_deviations<-c()
+for(i in scores){
+  sum_deviations[i]<-sum(scores-i)
+}
+sum_deviations
+which(sum_deviations==0)
+```
+```{r}
+numbers<-c(-10,-8,-1,2,5,6)
+numbers
+which(numbers==min(abs(numbers)))
+which(abs(numbers)==min(abs(numbers)))
+```
+```{r}
+scores<-1:20
+sum_deviations<-c()
+
+for(i in scores){
+  sum_deviations[i]<-sum(scores-i)
+}
+sum_deviations
+```
+```{r}
+which(abs(sum_deviations)==min(abs(sum_deviations)))
+```
+
+```{r}
+test_for_mean<-function(scores,test_sequence){
+
+sum_dev<-c()
+  
+for(i in 1:length(test_sequence)){
+  sum_dev[i]<-sum(scores-test_sequence[i])
+} 
+mean_index<-which(abs(sum_dev)==min(abs(sum_dev)))
+test_sequence[mean_index]
+}
+
+a<-c(1,4,3,2,4,3,5,4,6,5,7,6,8,7,9,8,7,6,7,6,5)
+b<-seq(1,10,.1)
+
+test_for_mean(a,b)
+mean(a)
+```
+```{r}
+gapminder_data<-read.table("open_data/gapminder.csv",sep=",",header=TRUE)
+mean(gapminder_data$lifeExp)
+mean(gapminder_data$pop)
+mean(gapminder_data$gdpPercap)
+```
+```{r}
+group_means<-gapminder_data%>%group_by(continent)%>%summarize(lifExp_mean=mean(lifeExp))
+```
+```{r}
+group_means<-gapminder_data%>%
+  group_by(continent)%>%
+  summarize(lifeExp_mean=mean(lifeExp))
+
+knitr::kable(group_means)
+```
+```{r}
+library(dplyr)
+
+group_means<-gapminder_data%>%
+  group_by(continent, country)%>%
+    summarize(mean_lifeExp=mean(lifeExp))
+
+knitr::kable(head(group_means))
+```
+```{r}
+table(group_means)
+```
+```{r}
+group_means<-gapminder_data%>%
+  group_by(continent)%>%
+    summarize(mean=mean(lifeExp),
+              median=median(lifeExp),
+              sd=sd(lifeExp),
+              var=var(lifeExp))
+knitr::kable(group_means)
+```
+```{r}
+group_means<-gapminder_data%>%
+  group_by(continent)%>%
+    summarize(mean_lifeExp=mean(lifeExp))
+
+ggplot(group_means,aes(x=continent,y=mean_lifeExp))+
+  geom_bar(stat="identity")+
+    xlab("Continent")+
+    ylab("Mean LifeExp")+
+    ggtitle("lifeExp by Continent")
+```
+```{r}
+ggplot(group_means,aes(x=continent,y=mean_lifeExp))+
+  geom_bar(stat="identity")+
+    xlab("Continent")+
+    ylab("Life Expectancy")+
+    theme_classic()+
+     ggtitle("Life Expectancy by Continent")
+```
+```{r}
+ggplot(group_means,aes(x=continent,y=mean_lifeExp,group=1))+
+  geom_point()+
+  geom_line()
+```
+
 
