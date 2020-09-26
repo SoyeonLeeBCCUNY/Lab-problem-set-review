@@ -291,5 +291,46 @@ my_median(b)
 d<-c(1,2,3,4,5)
 my_median(d)
 ```
+```{r}
+section<-c("morning","afternoon","evening")
+avg_scores<-c(85,90,93)
+scores_by_section<-data.frame(section,avg_scores)
+
+ggplot(scores_by_section,aes(x=section,y=avg_scores))+
+  geom_bar(stat="identity")
+```
+```{r}
+instructor<-c(1,1,1,2,2,2)
+section<-c("morning","afternoon","evening",
+           "morning","afternoon","evening")
+avg_scores<-c(75,78,80,88,76,63)
+
+instr_sec_scores<-data.frame(instructor,section,avg_scores)
+
+ggplot(instr_sec_scores,aes(x=section,y=avg_scores))+
+  geom_bar(stat="identity")+
+  facet_wrap(~instructor)
+```
+```{r}
+world_happiness<-read.table("open_data/WHR2018.csv",sep=",",header=TRUE)
+
+library(dplyr)
+library(ggplot2)
+social_supp<-world_happiness%>%
+  group_by(year)%>%
+    filter(year>=2010,
+           year<=2015)%>%
+      summarize(mean_ss=mean(Social.support),
+                sd_ss=sd(Social.support))
+   
+
+knitr::kable(social_supp)
+ggplot(social_supp,aes(x=year,y=mean_ss))+
+    geom_bar(stat="identity")+
+    geom_errorbar(aes(ymin=mean_ss-sd_ss,
+                      ymax=mean_ss+sd_ss),
+                      width=0.2)
+```
+
 
 
