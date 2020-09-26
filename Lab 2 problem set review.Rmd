@@ -220,5 +220,30 @@ ggplot(group_means,aes(x=continent,y=mean_lifeExp,group=1))+
   geom_point()+
   geom_line()
 ```
+```{r}
+ggplot(group_means,aes(x=continent,y=mean_lifeExp,group=1))+
+  geom_point()+
+  geom_line()
+```
+```{r}
+group_means<-gapminder_data%>%
+  group_by(continent)%>%
+    summarize(sd_lifeExp=sd(lifeExp),
+              mean_lifeExp=mean(lifeExp))
+
+ggplot(group_means,aes(x=continent,y=mean_lifeExp,group=1))+
+  geom_point()+
+  geom_line()+
+  geom_errorbar(aes(ymin=mean_lifeExp-sd_lifeExp,
+                    ymax=mean_lifeExp+sd_lifeExp),
+                    width=0.2)
+```
+```{r}
+ggplot(group_means,aes(x=continent,y=mean_lifeExp))+
+    geom_bar(stat="identity")+
+    geom_errorbar(aes(ymin=mean_lifeExp-sd_lifeExp,
+                      ymax=mean_lifeExp+sd_lifeExp),
+                      width=0.25)
+```
 
 
