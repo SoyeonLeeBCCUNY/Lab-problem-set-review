@@ -225,7 +225,71 @@ ggplot(group_means,aes(x=continent,y=mean_lifeExp,group=1))+
   geom_point()+
   geom_line()
 ```
+```{r}
+scores<-c(1,4,5,6,7,9)
+numbers_to_test<-min(scores):max(scores)
 
+sum_deviations<-c()
+for(i in 1:length(numbers_to_test)){
+  sum_deviations[i]<-sum(scores-numbers_to_test[i])
+} 
+which(sum_deviations==0)
+mean(scores)
+```
+```{r}
+sum_deviations
+which(abs(sum_deviations)==min(abs(sum_deviations)))
+```
+```{r}
+scores<-c(1,4,5,6,7,9)
+numbers_to_test<-seq(from=min(scores),
+                     to=max(scores),
+                     by=.1111)
 
+sum_deviations<-c()
+for(i in 1:length(numbers_to_test)){
+  sum_deviations[i]<-sum(scores-numbers_to_test[i])
+} 
+sum_deviations
+```
+```{r}
+which(sum_deviations==0)
+which(abs(sum_deviations)==min(abs(sum_deviations)))
+```
+```{r}
+scores<-c(1,2,3,4,5)
+mean(scores)
+scores-mean(scores)
+sum(scores-mean(scores))
+```
+```{r}
+the_mean==which(scores-mean(scores)==0)
+```
+
+```{r}
+my_median<-function(x){
+  sorted_scores<-sort(x)
+  for(i in sorted_scores){
+    if(length(sorted_scores)/2==0){
+      first_mid<-sorted_scores[length(sorted_scores)/2]
+      second_mid<-sorted_scores[length(sorted_scores)/2+1]
+      even_mid<-(first_mid+second_mid)/2
+      return(even_mid)
+    } else{
+        a<-ceiling(length(sorted_scores)/2)
+        odd_mid<-sorted_scores[a]
+        return(odd_mid)
+    }
+  }
+  
+}
+```
+
+```{r}
+b<-c(1,2,3,4,5,6)
+my_median(b)
+d<-c(1,2,3,4,5)
+my_median(d)
+```
 
 
