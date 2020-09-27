@@ -1,0 +1,45 @@
+---
+title: "Lab 3 problem set review"
+author: "Soyeon Lee"
+date: "9/27/2020"
+output: html_document
+---
+
+```{r}
+x<-c(1,2)
+sample(x,size=2)
+```
+```{r}
+sample(x,size=10,replace=TRUE)
+```
+```{r}
+x<-c(2,1)
+sample(x,size=10,replace=TRUE,prob=c(.9,.1))
+```
+```{r}
+coin_outcomes<-c("heads","tails")
+sample(coin_outcomes,size=10,replace=TRUE)
+```
+```{r}
+distribution<-1:1000
+sample(distribution,size=10,replace=FALSE)
+```
+```{r}
+rnorm(10,mean=0,sd=1)
+a<-rnorm(10,0,1)
+```
+```{r}
+hist(rnorm(100,0,1))
+```
+```{r}
+my_data<-data.frame(sample_data=rnorm(n=100,mean=0,sd=1),
+                    sample=1)
+
+library(ggplot2)
+
+ggplot(my_data,aes(x=sample_data))+
+  geom_histogram()
+
+
+```
+
