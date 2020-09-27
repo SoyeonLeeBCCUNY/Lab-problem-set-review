@@ -91,6 +91,76 @@ sd(my_sample)
 skewness(my_sample)
 kurtosis(my_sample)
 ```
+
+```{r}
+flip<-c()
+outcome<-c()
+proportion_heads<-c()
+proportion_tails<-c()
+
+for(i in 1:5){
+  flip[i]<-i
+  outcome[i]<-sample(x=c(1,0),size=1)
+  proportion_heads[i]<-sum(outcome)/length(outcome)
+  proportion_tails[i]<-1-proportion_heads[i]
+}
+outcome
+proportion_heads
+```
+
+```{r}
+flip<-c()
+outcome<-c()
+proportion_heads<-c()
+proportion_tails<-c()
+
+for(i in 1:20){
+  flip[i]<-i
+  outcome[i]<-sample(x=c(1,0),size=1)
+  proportion_heads[i]<-sum(outcome)/flip[i]
+  proportion_tails[i]<-1-proportion_heads[i]
+}
+
+sim_data<-data.frame(flip,
+                     outcome,
+                     proportion_heads,
+                     proportion_tails)
+
+library(ggplot2)
+ggplot(sim_data,aes(x=flip,y=proportion_heads))+
+  geom_point()+
+  geom_line()+
+  geom_hline(yintercept = 0.5,color="red")
+
+
+
+
+```
+```{r}
+n<-seq(1000,100000,1000)
+sample_mean<-c()
+sample_sd<-c()
+
+for(i in 1:length(n)){
+  sim_sample<-rnorm(n[i],mean=100,sd=50)
+  sample_mean[i]<-mean(sim_sample)
+  sample_sd[i]<-sd(sim_sample)
+}
+
+sim_data<-data.frame(n,
+                     sample_mean,
+                     sample_sd)
+
+ggplot(sim_data,aes(x=n,y=sample_mean))+
+  geom_line()+
+  geom_hline(yintercept = 100,color="red")
+```
+```{r}
+ggplot(sim_data,aes(x=n,y=sample_sd))+
+  geom_point()+
+  geom_line()+
+  geom_hline(yintercept=50,color="red")
+```
 ```{r}
 
 ```
