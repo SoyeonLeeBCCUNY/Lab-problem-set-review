@@ -40,6 +40,34 @@ library(ggplot2)
 ggplot(my_data,aes(x=sample_data))+
   geom_histogram()
 
+```
+```{r}
+my_data<-data.frame(sample_data=rnorm(100,0,1),
+                    sample=rep(1:4,each=25))
 
+ggplot(my_data,aes(x=sample_data))+
+  geom_histogram()+
+  facet_wrap(~sample)
+```
+```{r}
+a<-runif(1000,min=1,max=1)
+
+hist(runif(1000,min=0,max=1))
+```
+```{r}
+my_sample<-runif(100,0,1)
+my_sample
+length(my_sample[my_sample<.05])
+```
+```{r}
+hist(rexp(n=1000,rate=100))
+```
+```{r}
+hist(rbinom(n=100,size=1,prob=.5))
+x<-rbinom(n=100,size=5,prob=c(.5,.5))
+print(x)
+```
+```{r}
+hist(rweibull(n=1000,shape=3,scale=1))
 ```
 
