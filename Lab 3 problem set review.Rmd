@@ -162,6 +162,66 @@ ggplot(sim_data,aes(x=n,y=sample_sd))+
   geom_hline(yintercept=50,color="red")
 ```
 ```{r}
+#practice problem 1
+sample<-c()
+sample_mean<-c()
+
+for(i in 1:5){
+  sample[i]<-i
+  sample_data<-sample(rnorm(25,mean=200,sd=100))
+  sample_mean[i]<-mean(sample_data)
+}
+
+sim_data<-data.frame(sample,
+                     sample_mean)
+
+ggplot(sim_data,aes(x=sample,y=sample_mean))+
+  geom_point()+
+  geom_line()+
+  geom_hline(yintercept=100,color="red")
+```
+```{r}
+observations<-rnorm(5*25,mean=200,sd=100)
+sample<-rep(1:5,each=25)
+sam_data<-data.frame(observations,sample)
+
+library(dplyr)
+
+group_summary<-sam_data%>%
+  group_by(sample)%>%
+    summarize(sample_mean=mean(observations),
+              sample_sd=sd(observations))
+
+knitr::kable(group_summary)
+
+ggplot(group_summary,aes(x=sample,y=sample_mean))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=sample_mean-sample_sd,
+                ymax=sample_mean+sample_sd),
+                width=0.2)
+
+```
+```{r}
+
+sample_size<-c(2,5,10,50,100)
+sample_mean<-c()
+
+for(i in 1:length(sample_size)){
+  observations<-sample(rnorm(sample_size[i]*10000,10,5))
+  sample_mean[i]<-mean(observations)
+}
+
+sim_data<-data.frame(sample_size,sample_mean)
+
+knitr::kable(sim_data)
+                    
+ggplot(sim_data,aes(x=sample_size,y=sample_mean))+
+  geom_point()+
+  geom_line()+
+  geom_hline(yintercept=10,color="blue")
+
+```
+```{r}
 
 ```
 
