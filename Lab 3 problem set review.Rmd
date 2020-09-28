@@ -222,6 +222,26 @@ ggplot(sim_data,aes(x=sample_size,y=sample_mean))+
 
 ```
 ```{r}
+sd_sample<-c()
+sd_population<-c()
+n<-c(2,5,10,50,100)
 
+for (i in 1:length(sample_size)){
+  sample<-sample(rnorm(n[i]*10000,mean=10,sd=5))
+  sd_sample[i]<-sd(sample)
+  sd_population[i]<-sqrt(var(sample)*(n[i]-1)/n[i])
+}
+
+sd_comparison<-data.frame(n,
+                          estimate=c(sd_sample,sd_population),
+                          formula=c(rep("N-1",5),rep("N",5)))
+
+ggplot(sd_comparison,aes(x=n,
+                         y=estimate,
+                         group=formula,
+                         color=formula))+
+         geom_line()+
+         geom_point()+
+         coord_cartesian(ylim=c(3,6))
 ```
 
