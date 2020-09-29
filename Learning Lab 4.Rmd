@@ -1,0 +1,14 @@
+---
+title: "Learning lab 4"
+author: "Soyeon Lee"
+date: "9/28/2020"
+output: html_document
+---
+```{r}
+rolls<-sample(1:6,10000,replace=TRUE)
+
+table(rolls)
+table(rolls)/10000
+```
+
+
