@@ -10,5 +10,43 @@ rolls<-sample(1:6,10000,replace=TRUE)
 table(rolls)
 table(rolls)/10000
 ```
+```{r}
+one<-sample(1:6,1000,replace=TRUE)
+two<-sample(1:6,1000,replace=TRUE)
+combined<-one+two
+
+table(combined)
+table(combined)/1000
+```
+```{r}
+first<-rep(x=1:6,times=6)
+second<-rep(x=1:6,each=6)
+sum_rolls<-first+second
+
+table(sum_rolls)
+
+tru_probs<-table(sum_rolls)/length(sum_rolls)
+sim_result<-table(combined)/1000
+
+tru_probs-sim_result
+```
+```{r}
+sample(c("A","B"),20,replace=TRUE,prob=c(.8,.2))
+```
+```{r}
+sample(letters,50,replace=TRUE)
+```
+```{r}
+my_letters<-sample(letters,50*5, replace=TRUE)
+
+my_strings<-matrix(my_letters,ncol=5)
+
+random_strings<-c()
+for(i in 1:50){
+  random_strings[i]<-paste0(my_strings[i,],collapse="")
+}
+random_strings
+
+```
 
 
