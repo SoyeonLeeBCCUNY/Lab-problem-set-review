@@ -45,8 +45,135 @@ random_strings<-c()
 for(i in 1:50){
   random_strings[i]<-paste0(my_strings[i,],collapse="")
 }
+
 random_strings
 
+```
+```{r}
+#concept 2
+coin_toss<-sample(c("H","T"),10,replace=TRUE)
+table(coin_toss)/10
+```
+```{r}
+sim_results<-replicate(10000,
+          sample(c(1,0),10,replace=TRUE)
+          )
+
+number_of_heads<-colSums(sim_results)
+table(number_of_heads)
+
+```
+```{r}
+number_of_heads<-rbinom(10000,10,prob=.5)
+table(number_of_heads)
+table(number_of_heads)/10000
+```
+```{r}
+flips<-sample(c("H","T"),30,replace=TRUE)
+combos<-matrix(flips,ncol=2)
+
+dim(combos)
+
+flip_combos<-c()
+for (i in 1:dim(combos)[1]){
+  flip_combos[i]<-paste(combos[i,],collapse ="")
+}  
+flip_combos
+  
+```
+```{r}
+flips<-sample(c("H","T"),10,replace=TRUE)
+
+sequence<-c()
+for(i in 2:length(flips)){
+  first_element<-flips[i-1]
+  second_element<-flips[i]
+  sequence[i]<-paste0(first_element,second_element)
+}
+table(sequence)
+table(sequence)/9
+```
+
+```{r}
+flips<-sample(c("H","T"),3,replace=TRUE)
+
+sequence<-c()
+for(i in 2:length(flips)){
+  first_flip<-flips[i-1]
+  second_flip<-flips[i]
+  sequence[i-1]<-paste0(first_flip,second_flip)
+}
+
+table(sequence)
+table(sequence)/2
+```
+```{r}
+simulated_sequence<-c(rbinom(10,1,.5),
+                      rbinom(10,1,.6))
+simulated_sequence
+
+my_experience<-c()
+my_belief<-c()
+
+for(i in 1:length(simulated_sequence)){
+  my_experience[i]<-simulated_sequence[i]
+  my_belief[i]<-sum(my_experience)/length(my_experience)
+}
+
+my_belief
+```
+```{r}
+sim_sequence<-c(rbinom(100,1,prob=.5),
+                rbinom(100,1,prob=.6))
+
+my_experience<-c()
+my_belief<-c()
+
+for(i in 1:length(sim_sequence)){
+  my_experience[i]<-sim_sequence[i]
+  my_belief[i]<-sum(my_experience)/length(my_experience)
+}
+
+plot(my_belief)
+```
+```{r}
+sim_sequence<-c(rbinom(100,1,.5),
+                rbinom(100,1,.6))
+
+sim_sequence
+
+my_events<-c()
+my_belief<-c()
+
+for(i in 1:length(sim_sequence) ){
+  my_events[i]<-sim_sequence[i]
+  
+  if(i<=20){
+    my_belief[i]<-sum(my_events)/length(my_events)
+  }else{
+    my_belief[i]<-sum(my_events[i:(i-21)])/length(my_events[i:(i-21)])
+  }
+}
+plot(my_belief)
+```
+```{r}
+sim_sequence<-c(rbinom(100,1,.5),
+                rbinom(100,1,.6))
+
+my_events<-c()
+my_belief<-c()
+
+#my_belief is based on a maximum of 20 my_events
+for (i in 1:length(sim_sequence)){
+  my_events[i]<-sim_sequence[i]
+  if(i<20){
+    my_belief[i]<-sum(my_events)/length(my_events)
+  }else{
+    my_belief[i]<-sum(my_events[i:(i-19)])/length(my_events[i:(i-19)])
+  }
+}
+
+plot(my_belief)
 ```
 
 
