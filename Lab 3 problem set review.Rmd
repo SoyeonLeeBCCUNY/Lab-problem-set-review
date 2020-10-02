@@ -244,4 +244,27 @@ ggplot(sd_comparison,aes(x=n,
          geom_point()+
          coord_cartesian(ylim=c(3,6))
 ```
+```{r}
+observations<-rnorm(5*25,mean=200,sd=100)
+samples<-rep(1:5,each=25)
+
+my_data<-data.frame(observations,samples)
+
+library(dplyr)
+
+group_means<-my_data%>%
+  group_by(samples)%>%
+    summarize(sample_mean=mean(observations),
+              sample_sd=sd(observations))
+
+library(ggplot2)
+
+ggplot(group_means,aes(x=samples,y=sample_mean))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=sample_mean-sample_sd,
+                    ymax=sample_mean+sample_sd),
+                    width=.2)+
+    ylab("mean")+
+    xlab("samples")
+```
 
