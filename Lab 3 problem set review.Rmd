@@ -267,4 +267,28 @@ ggplot(group_means,aes(x=samples,y=sample_mean))+
     ylab("mean")+
     xlab("samples")
 ```
+```{r}
+n<-c(2,5,10,50,100)
+sample_means<-c()
+sample_sd<-c()
+
+for(i in 1:length(n)){
+  sampling<-rnorm(n[i]*10000,mean=10,sd=5)
+  sample_means[i]<-mean(sampling)
+  sample_sd[i]<-sd(sampling)
+}
+
+sample_data<-data.frame(n,
+                        sample_means,
+                        sample_sd)
+
+ggplot(sample_data,aes(x=n,y=sample_means))+
+    geom_bar(stat="identity")+
+    geom_errorbar(aes(ymin=sample_means-sample_sd,
+                      ymax=sample_means+sample_sd),
+                        width=.2)+
+    ylab("sample size")+
+    xlab("sample mean")
+
+```
 
