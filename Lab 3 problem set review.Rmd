@@ -291,4 +291,30 @@ ggplot(sample_data,aes(x=n,y=sample_means))+
     xlab("sample mean")
 
 ```
+```{r}
+n<-c(2,5,10,50,100,2,5,10,50,100)
+samPop_sd<-c()
+
+for(i in 1:length(n)){
+  sampling<-rnorm(n[i]*10000,mean=10,sd=5)
+  if(i<=5){
+    samPop_sd[i]<-sd(sampling)
+  } else {
+      samPop_sd[i]<-sqrt(var(sampling)*((n[i]-1)/n[i]))
+  }
+}
+
+sample_pop_sd<-data.frame(n,
+                          samPop_sd,
+                          formula=c(rep("N-1",each=5),rep("N",each=5)))
+
+ggplot(sample_pop_sd,aes(x=n,
+                         y=samPop_sd,
+                         group=formula))+
+  geom_point()+
+  geom_line()
+  
+
+
+```
 
