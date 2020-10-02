@@ -256,5 +256,36 @@ for(i in 2:length(flips)){
 table(sequence)/sum(length(sequence)-1)
 
 ```
+```{r}
+sim_sequence<-c(rbinom(100,1,prob=.5),
+                rbinom(100,1,prob=.6))
+
+my_experience<-c()
+my_belief<-c()
+for(i in 1:length(sim_sequence)){
+  my_experience[i]<-sim_sequence[i]
+  my_belief[i]<-sum(my_experience)/length(my_experience)
+}
+plot(my_belief)
+
+```
+```{r}
+sim_sequence<-c(rbinom(100,1,.5),
+                rbinom(100,1,.6))
+
+my_events<-c()
+my_belief<-c()
+
+for(i in 1:length(sim_sequence)){
+  my_events[i]<-sim_sequence[i]
+  if(i<=20){
+    my_belief[i]<-sum(my_events)/length(my_events)
+  }else{
+      my_belief[i]<-sum(my_events[i:(i-20)])/
+                    length(my_events[i:(i-20)])
+  }
+}
+plot(my_belief)
+```
 
 
