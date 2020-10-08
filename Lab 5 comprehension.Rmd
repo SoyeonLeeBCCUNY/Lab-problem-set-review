@@ -123,5 +123,9 @@ knitr::kable(some_data)
 pnorm(2.5,log.p=FALSE)
 pnorm(2.5,log.p=TRUE)
 ```
+```{r}
+pnorm(2.5,lower.tail=FALSE)
+pnorm(2.5,lower.tail=TRUE)
+```
 
 
