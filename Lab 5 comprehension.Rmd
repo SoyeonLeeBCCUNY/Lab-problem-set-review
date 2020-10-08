@@ -112,4 +112,16 @@ sd(sample_means)
 
 1/sqrt(10)
 ```
+```{r}
+library(ggplot2)
+some_data<-data.frame(density=dnorm(-4:4,mean=0,sd=1,log=TRUE),
+                      x=-4:4)
+knitr::kable(some_data)
+```
+```{r}
+#If log.p set as FALSE gives me the raw value p, what is the line 124 giving me?  
+pnorm(2.5,log.p=FALSE)
+pnorm(2.5,log.p=TRUE)
+```
+
 
