@@ -1,0 +1,101 @@
+---
+title: "Lab 5 comprehension"
+author: "Soyeon Lee"
+date: "10/1/2020"
+output: html_document
+---
+
+```{r}
+?distributions
+```
+
+```{r}
+rnorm(n=10,mean=0,sd=1)
+```
+```{r}
+library(ggplot2)
+some_data<-data.frame(observations=rnorm(n=10000,mean=0,sd=1),
+                      type="A")
+
+ggplot(some_data,aes(x=observations))+
+  geom_histogram(bins=100,color="black",
+                  fill='orange')
+
+```
+```{r}
+some_data$observations[some_data$observations>2.5]
+```
+```{r}
+length(some_data$observations[some_data$observations>2.5])
+```
+```{r}
+length(some_data$observations[some_data$observations>2.5])/10000
+
+```
+```{r}
+rnorm(n=10, mean=0,sd=1)
+```
+```{r}
+```
+
+
+```{r}
+library(ggplot2)
+some_data<-data.frame(density=dnorm(-4:4,mean=0,sd=1),
+                      x=-4:4)
+knitr::kable(some_data)
+```
+```{r}
+ggplot(some_data, aes(x=x,y=density))+geom_point()
+```
+```{r}
+some_data<-data.frame(density=dnorm(seq(-4,4,.001),mean=0,sd=1),
+                      x=seq(-4,4,.001))
+ggplot(some_data,aes(x=x,y=density))+
+    geom_line()
+```
+```{r}
+library(dplyr)
+some_data<-data.frame(density=dnorm(seq(-4,4,.001),mean=0,sd=1),
+                      x=seq(-4,4,.001))
+region_data<-some_data%>%
+  filter(x>2.5)
+
+ggplot(some_data,aes(x=x,y=density))+
+  geom_line()+
+  geom_ribbon(data=region_data,
+              fill="red",
+              aes(ymin=0,ymax=density))
+```
+```{r}
+pnorm(2.5,mean=0,sd=1)
+```
+```{r}
+some_data<-data.frame(density=dnorm(seq(-4,4,.001),mean=0,sd=1),
+                      x=seq(-4,4,.001))
+
+region_data<-some_data%>%
+  filter(x<2.5)
+
+ggplot(some_data, aes(x=x,y=density))+
+  geom_line()+
+  geom_ribbon(data=region_data,
+              fill="red",
+              aes(ymin=0,ymax=density))
+```
+```{r}
+1-pnorm(2.5,mean=0,sd=1)
+pnorm(2.5,mean=0,sd=1,lower.tail=FALSE)
+```
+```{r}
+qnorm(.25,mean=0,sd=1)
+qnorm(.5,mean=0,sd=1)
+```
+```{r}
+qnorm(.95,mean=0,sd=1,lower.tail=FALSE)
+qnorm(.05,mean=0,sd=1,lower.tail=FALSE)
+```
+```{r}
+mean(rnorm(10,mean=1,sd=1))
+```
+
