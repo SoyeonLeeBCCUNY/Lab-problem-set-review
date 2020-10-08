@@ -98,4 +98,18 @@ qnorm(.05,mean=0,sd=1,lower.tail=FALSE)
 ```{r}
 mean(rnorm(10,mean=1,sd=1))
 ```
+```{r}
+sample_means<-replicate(10000,mean(rnorm(10,0,1)))
+hist(sample_means)
+```
+```{r}
+sample_means<-replicate(10000,mean(rnorm(10,0,1)))
+sd(sample_means) 
+```
+```{r}
+sample_means<-replicate(10000,mean(rnorm(10,0,1)))
+sd(sample_means)
+
+1/sqrt(10)
+```
 
