@@ -1,0 +1,14 @@
+---
+title: "Lab 4 review"
+author: "Soyeon Lee"
+date: "10/16/2020"
+output: html_document
+--
+```{r}
+rolls<-sample(1:6,10000,replace=TRUE)
+table(rolls)
+table(rolls)/10000
+```
+
+
+
