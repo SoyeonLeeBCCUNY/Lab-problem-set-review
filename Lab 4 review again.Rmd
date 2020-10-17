@@ -1,0 +1,175 @@
+---
+title: "Lab 4 review 2"
+author: "Soyeon Lee"
+date: "10/16/2020"
+output: html_document
+---
+
+```{r cars}
+rolls<-sample(1:6,1000,replace=TRUE)
+table(rolls)
+table(rolls)/1000
+sum(table(rolls)/1000)
+```
+
+```{r}
+one<-sample(1:6,1000,replace=TRUE)
+two<-sample(1:6,1000,replace=TRUE)
+combined<-one+two
+length(combined)
+table(combined)
+table(combined)/1000
+sum(table(combined)/1000)
+```
+```{r}
+first<-rep(1:6,each=6)
+second<-rep(1:6,times=6)
+sum_rolls<-first+second
+table(sum_rolls)
+table(sum_rolls)/length(sum_rolls)
+sum(table(sum_rolls)/length(sum_rolls))
+```
+```{r}
+sim_result<-table(combined)/length(combined)
+true_result<-table(sum_rolls)/length(sum_rolls)
+true_result-sim_result
+```
+```{r}
+sample(c("A","B"),20,replace=TRUE,prob=c(.8,.2))
+```
+```{r}
+sample(letters,50,replace=TRUE)
+```
+```{r}
+my_letters<-sample(letters,50*5,replace=TRUE)
+
+my_strings<-matrix(my_letters,ncol=5)
+
+paste(my_strings[1,],collapse="")
+
+random_strings<-c()
+for(i in 1:dim(my_strings)[1]){
+  random_strings[i]<-paste0(my_strings[i,],collapse="")
+}
+random_strings
+```
+```{r}
+sim_results<-replicate(10000,sample(c(1,0),10,replace=TRUE))
+
+number_of_head<-colSums(sim_results)
+table(number_of_head)/length(sim_results)
+
+heads<-rbinom(10000,10,prob=.5)
+table(heads)/10000
+
+```
+```{r}
+flips<-sample(c("H","T"),10000,replace=TRUE)
+
+sequence<-c()
+for(i in 2:length(flips)){
+  first_flip<-flips[i-1]
+  second_flip<-flips[i]
+  sequence[i-1]<-paste0(first_flip,second_flip)
+}
+
+table(sequence)
+table(sequence)/length(sequence)
+sum(table(sequence)/length(sequence))
+```
+```{r}
+flips<-sample(c("H","T"),10000,replace=TRUE)
+
+sequence<-c()
+for(i in 3:length(flips)){
+  first_flip<-flips[i-2]
+  second_flip<-flips[i-1]
+  third_flip<-flips[i]
+  sequence[i-2]<-paste0(first_flip,second_flip,third_flip)
+}
+
+table(sequence)
+table(sequence)/length(sequence)
+
+```
+```{r}
+simulated_sequence<-c(rbinom(100,1,.5),
+                      rbinom(100,1,.6))
+
+my_events<-c()
+my_belief<-c()
+for(i in 1:length(simulated_sequence)){
+  my_events[i]<-simulated_sequence[i]
+  my_belief[i]<-sum(my_events)/length(my_events)
+}
+plot(my_belief)  
+```
+```{r}
+simulated_sequence<-c(rbinom(100,1,.5),
+                      rbinom(100,1,.6))
+
+my_events<-c()
+my_belief<-c()
+for(i in 1:length(simulated_sequence)){
+  my_events[i]<-simulated_sequence[i]
+    if(i<=20){
+      my_belief[i]<-sum(my_events)/length(my_events)
+    }else{
+      my_belief[i]<-sum(my_events[i:(i-20)])/
+                    length(my_events[i:(i-20)])
+    }
+}
+plot(my_belief)
+```
+```{r}
+#Problem 1
+my_paragraph<-"What We Do in the Shadows is a 2014 New Zealand mockumentary[4] horror comedy film written and directed by Jemaine Clement and Taika Waititi and the first installment in the What We Do in the Shadows franchise. The film also stars Clement and Waititi, along with Jonathan Brugh, Ben Fransham, Cori Gonzalez-Macuer, Stu Rutherford, and Jackie van Beek. The film's plot concerns several vampires who live together in a flat in Wellington."
+
+the_letters<-unlist(strsplit(my_paragraph,split=""))
+the_letters
+```
+```{r}
+lower_case<-tolower(my_letters)
+
+letter_counts<-table(lower_case)
+letter_data<-data.frame(letter_counts)
+
+library(dplyr)
+
+final<-letter_data%>%
+  filter(lower_case%in%letters==TRUE)
+
+total_letters<-sum(final$Freq)
+
+final<-final%>%
+  mutate(probabilities=Freq/total_letters)
+
+knitr::kable(final)
+```
+```{r}
+sim_flips<-sample(c(1,-1),10000, replace=TRUE)
+
+steps<-c()
+random_walk<-c(0)
+for(i in 1:length(sim_flips)){
+  steps[i]<-sim_flips[i]
+  random_walk[i+1]<-steps[i]+random_walk[i]
+}
+plot(random_walk[1:1000])
+```
+```{r}
+logical_steps<-sign(random_walk)
+
+sequence<-c()
+counter<-0
+for(i in 1:length(logical_steps)){
+  if(logical_steps[i]==0){
+    sequence<-c(sequence,counter)
+    counter<-0
+  }else{
+    counter<-c(counter+logical_steps[i])
+  }
+}
+max(sequence)
+```
+
