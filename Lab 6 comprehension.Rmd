@@ -1,0 +1,11 @@
+---
+title: "Lab 6 comprehension"
+author: "Soyeon Lee"
+date: "10/17/2020"
+output: html_document
+---
+
+```{r}
+
+```
+
