@@ -45,4 +45,59 @@ x<-c(1,2,3,4,5)
 sum(x)/length(x)
 
 ```
+```{r}
+sum(1:100)
+
+```
+```{r}
+1:5
+1:10
+-5:5
+```
+```{r}
+
+```
+```{r}
+seq(from=1, to=2,length.out=10)
+```
+```{r}
+sum(seq(1,2,length.out = 10))
+sum(seq(from=1, to=2, length.out = 10))
+```
+```{r}
+sum(seq(100,200,5))
+X1<-100
+Xn<-200
+step<-5
+(((Xn-X1)/step)+1)*((X1+Xn)/2)
+
+```
+```{r}
+1:100
+
+```
+```{r}
+100:1
+```
+```{r}
+a<-1:5
+a
+rm(a)
+
+```
+```{r}
+a<-c(1,6,3,2,8,9)
+a[2]
+a[4]
+```
+```{r}
+
+my_sum<-function(X){
+  sum<-0
+  for(i in X)
+    sum<-sum+i
+  return(sum)
+}  
+my_sum(1:100)
+```
 
