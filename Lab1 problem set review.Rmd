@@ -191,6 +191,59 @@ add_multiply<-function(input,second, third){
 add_multiply(1,2,3)
 ```
 ```{r}
- 
+seq_generator<-function(from, to, by=1){
+  X1<-from
+  Xn<-to
+  result<-seq(X1,Xn,by=1)
+  print(return(result))
+}
+
+seq_generator(from=1, to=5)
+
+```
+```{r}
+seq_generator<-function(first,last){
+  for(i in first:last)
+    print(i)
+    i<-i+1
+}
+seq_generator(first=1, last=10) 
+```
+```{r}
+gauss_methd<-function(first,last,step){
+  X1<-first
+  Xn<-last
+  c<-step
+  result<-(((Xn-X1)/c)+1)*((X1+Xn)/2)
+  print(return(result))
+}
+gauss_methd(10,100,10)
+```
+```{r}
+seq_and_sum<-function(first, last, step){
+  numbers<-seq(first,last,step)
+  the_sum<-sum(numbers)
+  output<-list(numbers,the_sum)
+  print(return(output))
+}
+seq_and_sum(10,100,10)
+```
+```{r}
+x<-c(1,2,3,4,5)
+
+average<-sum(x)/length(x)
+average
+
+```
+```{r}
+X<-c(1,2,3,4,5)
+the_sum<-0
+the_length<-0
+for(i in x){
+  the_sum<-the_sum+i
+  the_length<-the_length+1
+  average<-the_sum/the_length
+}
+print(average)
 ```
 
