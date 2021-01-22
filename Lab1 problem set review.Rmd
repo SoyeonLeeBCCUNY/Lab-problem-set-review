@@ -100,4 +100,97 @@ my_sum<-function(X){
 }  
 my_sum(1:100)
 ```
+```{r}
+for (i in 1:5){
+  print("hello")
+}
+
+```
+```{r}
+for(i in 1:5){
+  print(i)
+}
+```
+```{r}
+my_sequence<-1:5
+for(i in my_sequence){
+  print(i)
+}
+```
+```{r}
+for(i in 1:10){
+  if(i<=10){
+    print(i)
+  }else{
+    break
+  }
+}
+```
+```{r}
+i<-1
+while(i<=5){
+  print(i)
+  i=i+1
+}
+```
+```{r}
+i<-1
+repeat{
+  print(i)
+  i<-i+1
+  if(i==6){
+    break
+  }
+}
+```
+```{r}
+a<-c(10,20,30,40,50)
+
+the_sum<-0
+for(i in a){
+  the_sum<-the_sum+i
+}
+the_sum
+sum(a)
+```
+```{r}
+print_greeting<-function(){
+  return(print("hello_world"))
+}
+
+print_greeting()
+```
+```{r}
+function_a<-function(input){
+  return(print(input))
+}
+
+function_a(1)
+
+```
+```{r}
+add_one<-function(input){
+  if(class(input)=="numeric"){
+    temp<-input+1
+    return(temp)
+  }else{
+    return(stop("input must be numeric"))
+  }
+}
+
+add_one(1)
+add_one(2)
+add_one("d")
+rm(temp)
+```
+```{r}
+add_multiply<-function(input,second, third){
+    temp<-(input+second)*third
+    return(temp)
+}
+add_multiply(1,2,3)
+```
+```{r}
+ 
+```
 
