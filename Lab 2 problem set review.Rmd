@@ -331,6 +331,103 @@ ggplot(social_supp,aes(x=year,y=mean_ss))+
                       ymax=mean_ss+sd_ss),
                       width=0.2)
 ```
+```{r}
+numbers<-c(2,4,5,6,3,4,5,6,6,9)
+nums_to_test<-1:10
+
+sum_deviations<-c()
+for(i in nums_to_test){
+  sum_deviations[i]<-sum(numbers-i)
+}
+sum_deviations
+
+```
+```{r}
+plot(abs(sum_deviations))
+which(sum_deviations==0)
+```
+```{r}
+
+my_median<-function(x){
+  sorted_nums<-sort(x)
+    if(length(sorted_nums)%%2==0){
+      first_mid<-sorted_nums[length(sorted_nums)/2]
+      second_mid<-sorted_nums[first_mid+1]
+      even_median<-(first_mid+second_mid)/2
+      return(even_median)
+    }else{
+      odd_median<-sorted_nums[(length(sorted_nums)+1)/2]
+    }
+}
+
+a<-1:10
+my_median(a)
+```
+```{r}
+sections<-c("morning","afternoon","evening")
+avg_scores<-c(85,90,93)
+sec_perform<-data.frame(sections,avg_scores)
+
+library(ggplot2)
+ggplot(sec_perform, aes(x=sections, y=avg_scores))+
+  geom_bar(stat="identity")
+  xlab("Section")+
+  ylab("Grade")
+```
+```{r}
+sections<-c("morning","afternoon","evening",
+            "morning","afternoon","evening")
+avg_scores<-c(75,78,80,88,76,63)
+instructors<-c("one","one","one","two","two","two")
+instructor_data<-data.frame(sections,avg_scores,instructors)
+
+library(ggplot2)
+ggplot(instructor_data, 
+       aes(x=sections, y=avg_scores,
+           group=instructors,fill=instructors))+
+  geom_bar(stat="identity")+
+  facet_wrap(~instructors)+
+  xlab("Section")+
+  ylab("Grade")
+```
+
+```{r}
+world_happy<-read.table("open_data/WHR2018.csv",
+                        sep=",",
+                        header=TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+group_means<-world_happy%>%
+  group_by(year)%>%
+  filter(year>=2010,
+         year<=2015)%>%
+  summarize(mean_lifeExp=mean(Healthy.life.expectancy.at.birth,na.rm=TRUE))
+  
+knitr::kable(group_means)
+```
 
 
+```{r}
+ggplot(group_means,aes(x=year,y=mean_lifeExp))+
+  geom_bar(stat="identity")
+```
+
+```{r}
+group_means<-world_happy%>%
+  group_by(year)%>%
+  filter(year>=2010,
+         year<=2015)%>%
+  summarize(mean_lifeExp=mean(Healthy.life.expectancy.at.birth,
+                              na.rm=TRUE),
+            sd_lifeExp=sd(Healthy.life.expectancy.at.birth))
+
+ggplot(group_means,aes(x=year,y=mean_lifeExp))+
+  geom_col()+
+  geom_errorbar(aes(ymin=mean_lifeExp-sd_lifeExp,
+                    ymax=mean_lifeExp+sd_lifeExp),
+                width=.25)
+```
 
