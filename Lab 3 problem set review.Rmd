@@ -318,3 +318,141 @@ ggplot(sample_pop_sd,aes(x=n,
 
 ```
 
+```{r}
+observations<-rnorm(5*25, mean=200,sd=100)
+samples<-rep(1:5,each=25)
+my_data<-data.frame(observations, samples)
+
+library(dplyr)
+my_means<-my_data%>%
+          group_by(samples)%>%
+          summarize(sample_mean=mean(observations))
+
+library(ggplot2)
+ggplot(my_means,aes(x=samples, y=sample_mean))+
+  geom_bar(stat="identity")+
+  xlab("Samples")+
+  ylab("Sample mean")
+```
+
+```{r}
+my_means<-my_data%>%
+          group_by(samples)%>%
+          summarize(sample_mean=mean(observations),
+                    sd_sample_mean=sd(observations))
+
+ggplot(my_means,aes(x=samples, y=sample_mean))+
+  geom_bar(stat="identity")+
+  geom_errorbar(aes(ymin=sample_mean-sd_sample_mean,
+                    ymax=sample_mean+sd_sample_mean),
+                width=.25)+
+  xlab("Samples")+
+  ylab("Sample mean")
+```
+```{r}
+#n=2
+observations<-rnorm(2*10000,20,5)
+samples<-rep(1:10000,each=2)
+my_data<-data.frame(observations, samples)
+summarized_data<-my_data%>%
+  group_by(samples)%>%
+  summarize(sample_mean=mean(observations))
+mean(summarized_data$sample_mean)
+```
+```{r}
+observations<-rnorm(5*10000,20,5)
+samples<-rep(1:10000,each=5)
+my_data<-data.frame(observations, samples)
+summarized_data<-my_data%>%
+  group_by(samples)%>%
+  summarize(sample_mean=mean(observations))
+mean(summarized_data$sample_mean)
+```
+```{r}
+observations<-rnorm(10*10000,20,5)
+samples<-rep(1:10000,each=10)
+my_data<-data.frame(observations, samples)
+summarized_data<-my_data%>%
+  group_by(samples)%>%
+  summarize(sample_mean=mean(observations))
+mean(summarized_data$sample_mean)
+```
+
+```{r}
+observations<-rnorm(50*10000,20,5)
+samples<-rep(1:10000,each=50)
+my_data<-data.frame(observations, samples)
+summarized_data<-my_data%>%
+  group_by(samples)%>%
+  summarize(sample_mean=mean(observations))
+mean(summarized_data$sample_mean)
+```
+
+```{r}
+observations<-rnorm(100*10000,20,5)
+samples<-rep(1:10000,each=100)
+my_data<-data.frame(observations, samples)
+summarized_data<-my_data%>%
+  group_by(samples)%>%
+  summarize(sample_mean=mean(observations))
+mean(summarized_data$sample_mean)
+```
+```{r}
+n<-c(2,5,10,50,100)
+mean_sample_means<-c()
+
+for(i in 1:length(n)){
+  sim_sample<-rnorm(n[i]*10000,20,5)
+  mean_sample_means[i]<-mean(sim_sample)
+}
+
+sim_data<-data.frame(n,
+                     mean_sample_means)
+
+ggplot(sim_data, aes(x=n, y=mean_sample_means))+
+  geom_bar(stat="identity")+
+  xlab("Sample_size")+
+  ylab("Mean of sample means")
+
+
+
+
+```
+
+```{r}
+observations<-rnorm(2*10000,mean=10, sd=5)
+samples<-rep(1:10000,each=2)
+my_data<-data.frame(observations, samples)
+
+summarized_data<-my_data%>%
+  group_by(samples)%>%
+    summarize(sample_means=mean(observations))
+
+mean(summarized_data$sample_means)
+```
+
+```{r}
+n<-c(2,5,10,50,100)
+sim_sample_means<-c()
+
+for(i in 1:length(n)){
+  observations<-rnorm(n[i]*10000,mean=10, sd=5)
+  samples<-rep(1:10000,each=n[i])
+  my_data<-data.frame(observations, samples)
+
+  summarized_data<-my_data%>%
+    group_by(samples)%>%
+    summarize(sample_means=mean(observations))
+
+  sim_sample_means[i]<-mean(summarized_data$sample_means)
+}
+
+sim_data<-data.frame(n,sim_sample_means)
+ggplot(sim_data,aes(x=n,y=sim_sample_means))+
+  geom_point()+
+  geom_line()+
+  xlab("Sample sizes")+
+  ylab("Sample means")+
+  coor_cartesian(ylim=c(0,20))
+```
+
