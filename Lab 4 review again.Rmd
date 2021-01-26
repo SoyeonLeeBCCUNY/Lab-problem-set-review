@@ -172,4 +172,82 @@ for(i in 1:length(logical_steps)){
 }
 max(sequence)
 ```
+```{r}
+flips<-sample(c("H","T"),10000,replace=TRUE)
+
+sequence<-c()
+for(i in 3:length(flips)){
+  first_element<-flips[i-2]
+  second_element<-flips[i-1]
+  third_element<-flips[i]
+  sequence[i-1]<-paste0(first_element,
+                        second_element,
+                        third_element)
+}
+table(sequence)/sum(table(sequence))
+```
+
+```{r}
+simulated_sequence<-c(rbinom(10,1,.5),
+                      rbinom(10,1,.6))
+simulated_sequence
+```
+```{r}
+
+wikipedia<-"Wolfgang Köhler (21 January 1887 – 11 June 1967) was a German psychologist and phenomenologist who, like Max Wertheimer and Kurt Koffka, contributed to the creation of Gestalt psychology."
+
+wiki_letters<-unlist(strsplit(my_paragraph,split=""))
+lower_case<-tolower(wiki_letters)
+lower_case
+
+letter_counts<-table(lower_case)
+letter_counts<-data.frame(letter_counts)
+
+library(dplyr)
+final<-letter_counts%>%
+  filter(lower_case%in%letters==TRUE)
+
+total_letters<-sum(final$Freq)
+
+final<-final%>%
+  mutate(probabilities=Freq/total_letters)
+
+knitr::kable(final)
+```
+
+```{r}
+step<-c(0)
+for (i in 1:10000){
+  coin_flip<-sample(c(1,-1),1)
+  step[i+1]<-step[i]+coin_flip
+}
+step[1:100]
+plot(step)
+```
+```{r}
+max(step)
+min(step)
+```
+
+```{r}
+step[1:100]
+```
+```{r}
+logical_step<-sign(step)
+sequence<-c()
+counter<-0
+
+for(i in 1:length(logical_step)){
+  if(logical_step[i]==0){
+    sequence<-c(sequence,counter)
+    counter<-0
+  }else{
+    counter<-counter+logical_step[i]
+  }
+}
+max(sequence)
+```
+```{r}
+sequence
+```
 
