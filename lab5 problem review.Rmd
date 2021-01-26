@@ -1,0 +1,48 @@
+---
+title: "Lab 5 problem review"
+author: "Soyeon Lee"
+date: "1/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pnorm(2.5,mean=0,sd=1,lower.tail=FALSE)
+```
+```{r}
+my_sample<-rnorm(1000000, mean=0,sd=1)
+selection<-my_sample[my_sample>2.5]
+length(selection)/length(my_sample)
+```
+
+```{r}
+#problem2
+10000*pnorm(q=130,mean=100,sd=10,lower.tail=FALSE)
+
+#another way
+test_takers<-rnorm(10000,100,10)
+length(test_takers[test_takers>130])
+```
+
+```{r}
+
+sampling_distribution<-replicate(10000,mean(rnorm(25,mean=10,sd=20)))
+length(sampling_distribution[sampling_distribution>=12])/
+length(sampling_distribution)
+```
+
+```{r}
+sampling_distribution<-replicate(10000,mean(rnorm(100,mean=10,sd=20)))
+length(sampling_distribution[sampling_distribution>=12])/
+length(sampling_distribution)
+```
+```{r}
+sampling_distribution<-replicate(10000,sd(rnorm(25,10,sd=20)))
+length(sampling_distribution[sampling_distribution<=15])/
+  length(sampling_distribution)
+hist(sampling_distribution)
+```
+
