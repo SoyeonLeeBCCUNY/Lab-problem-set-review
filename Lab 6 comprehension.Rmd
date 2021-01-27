@@ -6,6 +6,20 @@ output: html_document
 ---
 
 ```{r}
+all_scores<-c(85,75,76,89,90,65,68,69)
+permutation_matrix<-matrix(unlist(permn(all_scores)),ncol=8,byrow=TRUE)
+group_A_means<-rowSums(permutation_matrix[,1:4])/4
+group_B_means<-rowSums(permutation_matrix[,5:8])/4
 
+```
+
+```{r}
+the_data<-read.csv("open_data/SchroederEpley2015data.csv",header=TRUE)
+
+library(dplyr)
+
+the_data%>%
+  group_by(ï..CONDITION)%>%
+  summarize(group_means=mean(Intellect_Rating))
 ```
 
