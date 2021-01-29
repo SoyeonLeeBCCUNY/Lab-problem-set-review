@@ -1,0 +1,44 @@
+---
+title: "Lab 7 problems review"
+author: "Soyeon Lee"
+date: "1/28/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+binom.test(x=.6*50,
+           n=50,
+           p=.5,
+           alternative='greater')
+```
+
+```{r}
+binom.test(x=440,
+           n=800,
+           alternative="greater")
+```
+
+```{r}
+rbinom(n=rep(1,10),size=1, prob=c(.5,.5,.5,.5,.5,.25,.25,.25,.25,.25))
+
+#simulation probability distribution
+simulated_test<-replicate(10000,
+                         rbinom(n=rep(1,10),
+                         size=1, 
+                         prob=c(.5,.5,.5,.5,.5,.25,.25,.25,.25,.25)))
+
+simulated_scores<-colSums(simulated_test)/10
+library(ggplot2)
+qplot(simulated_scores)+
+  geom_histogram()
+  
+```
+```{r}
+length(simulated_scores[simulated_scores>.75])/length(simulated_scores)
+
+```
+
