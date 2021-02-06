@@ -1,0 +1,58 @@
+---
+title: "Lab 8 review"
+author: "Soyeon Lee"
+date: "1/31/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+first_one<-dnorm(seq(-4,4,length.out=10),0,1)
+second_one<-dnorm(seq(5,45,length.out=10),25,5)
+
+plot_df<-data.frame(score=c(first_one,second_one),
+                    x=c(seq(-4,4,length.out = 10),seq(5,45,length.out = 10)),
+                    zscore=c(seq(-4,4,length.out=10),
+                             seq(5,45,length.out = 10)-25/5),
+                    distribution=rep(c("first","second"),each=10))
+
+library(ggplot2)
+
+ggplot(plot_df,aes(y=score,x=x))+
+  geom_line()+
+  facet_wrap(~distribution)
+```
+
+```{r}
+
+#user provided mean and sd
+raw_to_z<-function(raw,mu,stdev){
+  temp<-(raw-mu)/stdev
+  return(temp)
+}
+
+a<-c(2,5,7,8,7,10)
+raw_to_z(a,mu=5,stdev=1)
+```
+
+```{r}
+z.test<-function(sample_mean,sample_size,mu,sigma){
+  smpl_distr_mean<-mu
+  smpl_distr_sd<-sigma/sqrt(sample_size)
+  
+  p_value<-pnorm(sample_mean,
+          smpl_distr_mean,
+          smpl_distr_sd,
+          lower.tail=FALSE)
+  return(p_value)
+}
+
+z.test(sample_mean=50,
+       sample_size=25,
+       mu=40,
+       sigma=7)
+```
+
