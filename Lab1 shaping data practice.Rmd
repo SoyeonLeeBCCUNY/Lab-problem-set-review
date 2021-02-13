@@ -1,0 +1,217 @@
+---
+title: "R2 Lab1"
+author: "Soyeon Lee"
+date: "2/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+wide_data<-data.frame(person=1:5,
+                      Morning=c(1,3,2,4,3),
+                      Afternoon=c(3,4,5,4,7),
+                      Evening=c(7,8,7,6,9))
+knitr::kable(wide_data)
+```
+```{r}
+long_data<-data.frame(person=rep(1:5,each=3),
+                      time_of_day=rep(c("Morning","Afternoon","Evening"),
+                                      times=5),
+                      counts=c(1,3,7,3,4,8,2,5,7,4,4,6,3,7,9))
+
+knitr::kable(long_data)
+```
+```{r}
+the_data<-"1,3,7; 3,4,8;2,5,7;4,4,6;3,7,9"
+
+library(dplyr)
+
+subjects<-unlist(strsplit(the_data,split=";"))
+subjects
+
+subjects<-strsplit(subjects,split=",")
+subjects
+
+subjects<-t(data.frame(subjects))
+subjects
+
+colnames(subjects)<-c("Morning","Afternoon","Evening")
+subjects
+
+row.names(subjects)<-1:5
+subjects<-as.data.frame(subjects)%>% 
+  mutate(person=1:5)
+
+```
+ 
+```{r}
+tidyr::pivot_longer(data=subjects,
+             cols=1:3,
+             names_to="time_of_day",
+             values_to="counts")
+```
+```{r}
+subject_data<-matrix(rbinom(50*10,1,.5 ),ncol=10,nrow=50)
+subject_means<-rowMeans(subject_data)
+t.test(subject_means,mu=.5)
+```
+```{r}
+subject_number<-rep(1:25,each=10)
+day<-rep(rep(c("Wednesday","Sunday"),each=5),25)
+measurement_number<-rep(1:5,2*25)
+weights<-rnorm(250,100,25)
+
+weight_data<-data.frame(subject_number,
+                        day,
+                        measurement_number,
+                        weights)
+
+head(weight_data)
+```
+```{r}
+subject_means<-weight_data%>%
+  group_by(subject_number,day)%>%
+  summarize(mean_weight=mean(weights),.groups="drop")
+
+head(subject_means)
+```
+```{r}
+t.test(mean_weight~day,paired=TRUE,data=subject_means)
+```
+```{r}
+subjects<-rep(1:10,each=50)
+room<-rep(c("noisy","quiet"),each=50*5)
+words<-rep(1:50,times=10)
+correct<-rbinom(500,1,0.5)
+
+ s,
+                    room,
+                    words,
+                    correct)
+
+recall_data
+```
+ 
+```{r}
+count_data<-recall_data%>%
+  group_by(subjects,room)%>%
+  summarize(number_correct=sum(correct),.groups="drop")
+
+count_data
+```
+ 
+```{r}
+t.test(number_correct~room, var.equal=TRUE,data=count_data)
+```
+ 
+```{r}
+people<-tibble(height=rnorm(100,90,10),
+               day=sample(1:31,100,replace=TRUE))
+people
+
+```
+```{r}
+lm.out<-lm(height~day,data=people)
+lm.out
+```
+```{r}
+summary(lm.out)
+```
+```{r}
+weight_data<-tibble(subject_number=rep(1:25,each=5*7),
+                    day=rep(rep(c("S","M","T","W","Th","F","Sa"),
+                                each=5),25),
+                    measurement_number=rep(1:5,7*25),
+                    weights=rnorm(25*5*7,100,25))
+```
+ 
+```{r}
+subject_means<-weight_data%>%
+  group_by(subject_number,day)%>%
+  summarize(mean_weight=mean(weights),.groups="drop")
+
+subject_means
+
+aov.out<-aov(mean_weight~day,data=subject_means)
+summary(aov.out)
+```
+```{r}
+subject_means<-weight_data%>%
+  group_by(subject_number,day)%>%
+  summarize(mean_weight=mean(weights),.groups="drop")
+
+subject_means
+
+lm.out<-lm(mean_weight~day,data=subject_means)
+summary(lm.out)
+```
+ 
+```{r}
+weight_data<-tibble(subject_number=rep(1:25,each=4*7),
+                    day=rep(rep(c("S","M","T","W","Th","F","Sa"),
+                                each=4),25),
+                    time_of_day=rep(c("Morning","Morning",
+                                      "Evening","Evening"),7*25),
+                    measurement_number=rep(rep(1:2,2),7*25),
+                    weights=rnorm(25*4*7,100,25))
+
+
+subject_means<-weight_data%>%
+  group_by(subject_number,day,time_of_day)%>%
+  summarize(mean_weight=mean(weights),.gropus="drop")
+
+subject_means
+
+aov.out<-aov(mean_weight~day*time_of_day,data=subject_means)
+summary(aov.out)
+```
+ 
+```{r}
+#Without converting as factor
+weight_data<-tibble(subject_number=rep(1:25,each=4*7),
+                    day=rep(rep(c("S","M","T","W","Th","F","Sa"),
+                                each=4),25),
+                    time_of_day=rep(c("Morning","Morning",
+                                      "Evening","Evening"),7*25),
+                    measurement_number=rep(rep(1:2,2),7*25),
+                    weights=rnorm(25*4*7,100,25))
+
+
+subject_means<-weight_data%>%
+  group_by(subject_number,day,time_of_day)%>%
+  summarize(mean_weight=mean(weights),.gropus="drop")
+
+subject_means
+
+lm.out<-lm(mean_weight~day*time_of_day,data=subject_means)
+summary(aov.out)
+```
+ 
+```{r}
+#Converted as factor lines 208 and 209
+weight_data<-tibble(subject_number=rep(1:25,each=4*7),
+                    day=rep(rep(c("S","M","T","W","Th","F","Sa"),
+                                each=4),25),
+                    time_of_day=rep(c("Morning","Morning",
+                                      "Evening","Evening"),7*25),
+                    measurement_number=rep(rep(1:2,2),7*25),
+                    weights=rnorm(25*4*7,100,25))
+
+
+subject_means<-weight_data%>%
+  group_by(subject_number,day,time_of_day)%>%
+  summarize(mean_weight=mean(weights),.grops="drop")
+
+subject_means$day<-as.factor(subject_means$day)
+subject_means$time_of_day<-as.factor(subject_means$time_of_day)
+
+subject_means
+
+lm.out<-lm(mean_weight~day*time_of_day,data=subject_means)
+summary(aov.out)
+```
+ 
+ 
