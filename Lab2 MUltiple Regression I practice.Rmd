@@ -1,0 +1,132 @@
+---
+title: "Lab2 multiple regression practice"
+author: "Soyeon Lee"
+date: "2/16/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tibble)
+simple_design<-tibble(group=rep(c(0,1),each=10),
+       DV=c(1,3,2,4,3,4,5,6,5,4,5,4,3,2,3,4,5,6,8,9))
+knitr::kable(simple_design)
+```
+```{r}
+library(ggplot2)
+ggplot(simple_design, aes(x=group, y=DV))+
+  geom_bar(stat="summary",fun="mean")+
+  geom_point()
+```
+```{r}
+t.test(DV~group, var.equal = TRUE, data=simple_design)
+```
+```{r}
+ggplot(simple_design, aes(x=group, y=DV))+
+  geom_bar(stat="summary",fun="mean",position="dodge")+
+  geom_point()+
+  geom_smooth(method="lm",formula=y~x,se=FALSE)
+```
+```{r}
+lm(DV~group,data=simple_design)
+```
+```{r}
+summary(lm(DV~group,data=simple_design))
+
+```
+```{r}
+sqrt(1.994)
+```
+```{r}
+recall_design<-tibble(practice=rep(c(2,4,8),each=3),
+                      subjects=1:9,
+                      recall=c(5,7,8,8,10,12,12,15,17))
+knitr::kable(recall_design)
+```
+```{r}
+ggplot(recall_design, aes(x=practice,y=recall))+
+  geom_bar(stat="summary",fun="mean",position="dodge")+
+  geom_point()
+  geom_smooth(method="lm", formula=y~x,se=FALSE)
+```
+```{r}
+summary(lm(recall~practice,data=recall_design))
+```
+```{r}
+recall_design$practice<-as.factor(recall_design$practice)
+
+ggplot(recall_design, aes(x=practice,y=recall))+
+  geom_bar(stat="summary",fun="mean",position="dodge")+
+  geom_point()+
+  geom_smooth(method="lm",formula=y~x,se=FALSE)
+```
+```{r}
+summary(lm(recall~practice,data=recall_design))
+```
+```{r}
+slamecka_design<-tibble(num_of_learning_trials=rep(c(2,4,8),each=6),
+                        num_of_IL=rep(c(2,4,8),times=6),
+                        subjects=1:18,
+                        recall=c(35,21,6,
+                                 39,31,8,
+                                 40,34,18,
+                                 52,42,46,
+                                 73,66,52,
+                                 61,58,46))
+knitr::kable(slamecka_design)
+```
+
+```{r}
+ggplot(slamecka_design,aes(x=num_of_IL,
+                           group=num_of_learning_trials,
+                           y=recall))+
+  geom_line(stat="summary",fun="mean")+
+  geom_point(stat="summary",fun="mean")+
+  theme_classic()
+
+summary(lm(recall~num_of_learning_trials + num_of_IL, 
+           data=slamecka_design))
+```
+```{r}
+slamecka_design$num_of_learning_trials<-
+  as.factor(slamecka_design$num_of_learning_trials)
+
+ggplot(slamecka_design,aes(x=num_of_IL,
+                           group=num_of_learning_trials,
+                           color=num_of_learning_trials,
+                           y=recall))+
+  geom_line(stat="summary",fun="mean")+
+  geom_point(stat="summary",fun="mean")+
+  theme_classic()
+```
+```{r}
+ggplot(slamecka_design,aes(x=num_of_IL,
+                           y=recall))+
+  geom_line(stat="summary",fun="mean")+
+  geom_point(stat="summary",fun="mean")+
+  theme_classic()+
+  facet_wrap(~num_of_learning_trials)
+```
+```{r}
+slamecka_design<-tibble(num_of_learning_trials=rep(c(2,4,8),each=6),
+                        num_of_IL=rep(c(2,4,8),times=6),
+                        subjects=rep(1:6,each=3),
+                        recall=c(35,21,6,
+                                 39,31,8,
+                                 40,34,18,
+                                 52,42,26,
+                                 61,58,46,
+                                 73,66,52))
+knitr::kable(slamecka_design)
+```
+```{r}
+ggplot(slamecka_design,aes(x=num_of_IL,y=recall))+
+  geom_line()+
+  geom_point()+
+  theme_classic()+
+  facet_wrap(~num_of_learning_trials*subjects,ncol=2)
+```
+
