@@ -1,0 +1,138 @@
+---
+title: "Lab03 Multiple regression II practice"
+author: "Soyeon Lee"
+date: "2/23/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+random_vectors<-matrix(rnorm(20*26,0,1),nrow=20,rcol=26)
+```{r}
+random_vectors<-matrix(rnorm(20*26,0,1),nrow=20,ncol=26)
+colnames(random_vectors)<-letters
+random_vectors<-as.data.frame(random_vectors)
+
+hist(cor(random_vectors))
+```
+```{r}
+summary(lm(a~b,data=random_vectors))$r.squared
+summary(lm(a~b+c,data=random_vectors))$r.squared
+summary(lm(a~b+c+d,data=random_vectors))$r.squared
+summary(lm(a~b+c+d+e,data=random_vectors))$r.squared
+summary(lm(a~b+c+d+e+f,data=random_vectors))$r.squared
+summary(lm(a~b+c+d+e+f+g,data=random_vectors))$r.squared
+summary(lm(a~b+c+d+e+f+g+h,data=random_vectors))$r.squared
+```
+```{r}
+summary(lm(a~b,data=random_vectors))$r.squared
+summary(lm(a~b*c,data=random_vectors))$r.squared
+summary(lm(a~b*c*d,data=random_vectors))$r.squared
+summary(lm(a~b*c*d*e,data=random_vectors))$r.squared
+summary(lm(a~b*c*d*e*f,data=random_vectors))$r.squared
+summary(lm(a~b*c*d*e*f*g,data=random_vectors))$r.squared
+summary(lm(a~b*c*d*e*f*g*h,data=random_vectors))$r.squared
+```
+```{r}
+summary(lm(a~b*c*d*e*f*g*h,data=random_vectors))
+```
+```{r}
+OL<-c(2,4,8)
+IL<-c(0,4,8)
+cor(OL,IL)
+```
+```{r}
+library(tibble)
+library(dplyr)
+library(ggplot2)
+```
+```{r}
+data<-tibble(X=c(4,4,7,7,10,10),
+             T=c(1,2,2,4,3,6),
+             Y=c(14,23,30,50,39,67))
+```
+
+```{r}
+overall_model<-summary(lm(Y~X+T, data=data))
+overall_model
+```
+```{r}
+cor(data)
+```
+```{r}
+cor(data)^2
+```
+```{r}
+lm.x<-lm(Y~X,data=data)
+
+data<-data%>%
+  mutate(X_residuals=residuals(lm.x),
+         X_predicted_Y=predict(lm.x))
+
+knitr::kable(data)
+```
+```{r}
+A<-ggplot(data=data,aes(y=Y,x=X))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE)
+
+B<-ggplot(data=data,aes(y=X_predicted_Y,x=X))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE)
+
+C<-ggplot(data=data,aes(y=X_residuals,x=X))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE)
+
+library(patchwork)
+
+A+B+C
+```
+```{r}
+lm.t<-lm(Y~T,data=data)
+
+data<-data%>%
+  mutate(T_residuals=residuals(lm.t),
+         T_predicted_Y=predict(lm.t))
+
+D<-ggplot(data,aes(y=Y,x=T))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE)
+
+E<-ggplot(data,aes(y=T_predicted_Y,x=T))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE)
+
+F<-ggplot(data,aes(y=T_residuals,x=T))+
+  geom_point()+
+  geom_smooth(method="lm",se=FALSE)
+
+D+E+F
+```
+```{r}
+lm.xt<-lm(X~T,data=data)
+
+residuals(lm.xt)
+```
+```{r}
+unique_X<-cor(residuals(lm.xt),data$Y)^2
+unique_X
+```
+```{r}
+lm.tx<-lm(T~X,data=data)
+residuals(lm.tx)
+unique_T<-cor(residuals(lm.tx),data$Y)^2
+unique_T
+```
+```{r}
+overall_model$r.squared-unique_X-unique_T
+```
+
+```{r}
+library(ppcor)
+
+spcor(data,method="pearson")
+```
+
