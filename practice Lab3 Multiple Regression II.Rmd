@@ -133,6 +133,9 @@ overall_model$r.squared-unique_X-unique_T
 ```{r}
 library(ppcor)
 
+data<-tibble(X=c(4,4,7,7,10,10),
+             T=c(1,2,2,4,3,6),
+             Y=c(14,23,30,50,39,67))
 spcor(data,method="pearson")
 ```
 
