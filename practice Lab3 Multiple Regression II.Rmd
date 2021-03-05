@@ -39,7 +39,7 @@ summary(lm(a~b*c*d*e*f*g*h,data=random_vectors))$r.squared
 summary(lm(a~b*c*d*e*f*g*h,data=random_vectors))
 ```
 ```{r}
-OL<-c(2,4,8)
+OL<-c(2,4,8) 
 IL<-c(0,4,8)
 cor(OL,IL)
 ```
@@ -64,6 +64,15 @@ cor(data)
 ```{r}
 cor(data)^2
 ```
+#just trying out the * interaction with unique effects
+```{r}
+lm.X_T_uniq<-lm(Y~X*T, data=data)
+summary(lm.X_T_uniq)
+
+```
+
+
+
 ```{r}
 lm.x<-lm(Y~X,data=data)
 
