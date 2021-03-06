@@ -34,4 +34,46 @@ chars<-strsplit(rquote,split="")[[1]]
 chars
 class(chars)
 ```
+```{r}
+triple<-function(x){
+  y<-3*x
+  return(y)
+  }
+triple(6)
+```
+```{r}
+triple<-function(x){
+  x<-3*x
+  x
+}
+
+a<-5
+triple(a)
+a
+```
+```{r}
+increment<-function(x,inc=1){
+  x<-x+inc
+  x
+}
+```
+
+
+```{r}
+first_and_last<-function(name){
+  name<-gsub(" ","",name)
+  letters<-strsplit(name,split="")[[1]]
+  c(first=min(letters),last=max(letters))
+}
+```
+
+
+```{r}
+#example of gsub function
+x <- "R Tutorial"
+gsub("ut","ot",x)
+```
+```{r}
+#unique
+```
 
