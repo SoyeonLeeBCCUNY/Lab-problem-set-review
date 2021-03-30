@@ -76,11 +76,53 @@ group_means<-c(4,3,10,11)
 (sum_squares<-sum(squared_differences))
 ```
 ```{r}
+library(tibble)
 fake_data<-tibble(IV=factor(c("A","B","C","D")),
                   DV=c(4,3,10,11))
 
 contrasts(fake_data$IV)
 ```
+```{r}
+contrasts(fake_data$IV)[,'D']
 
+contrasts(fake_data$IV)[,'D']*differences
 
+grand_mean + (1*differences [4])
+```
+```{r}
+(differences)
+
+contrast_diff<-contrasts(fake_data$IV)* differences
+
+contrast_gmean<-grand_mean *contrasts(fake_data$IV)
+
+contrast_diff +contrast_gmean
+```
+
+```{r}
+c1<-c(-1,-1,1,1)
+c2<-c(1,-1,0,0)
+c3<-c(0,0,-1,1)
+
+my_contrasts<-cbind(c1,c2,c3)
+
+contrasts(fake_data$IV)<-my_contrasts
+contrasts(fake_data$IV)
+
+cor(contrasts(fake_data$IV))
+cor(my_contrasts)
+```
+
+```{r}
+contrasts(fake_data$IV)
+
+CaMa<-group_means * contrasts(fake_data$IV)
+numerator<-1*(colSums(CaMa))^2
+numerator/colSums(contrasts(fake_data$IV)^2)
+
+```
+
+```{r}
+
+```
 
