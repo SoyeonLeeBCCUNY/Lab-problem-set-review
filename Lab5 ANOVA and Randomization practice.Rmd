@@ -1,0 +1,23 @@
+---
+title: "Lab5 ANOVa and Randomization "
+author: "Soyeon Lee"
+date: "3/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+some_values<-rf(1000,3,16)
+hist(some_values)
+
+pf(4,3,6,lower.tail = FALSE)
+
+```
+
+```{r}
+
+```
+
