@@ -123,6 +123,55 @@ numerator/colSums(contrasts(fake_data$IV)^2)
 ```
 
 ```{r}
+(fake_data$DV)
 
+(grand_means<-c(7,7,7,7))
+
+grand_means + contrasts(fake_data$IV)[,1]*3
+
+grand_means +
+  contrasts(fake_data$IV)[,1]*1 +
+  contrasts(fake_data$IV)[,2]*1 +
+  contrasts(fake_data$IV)[,3]*1
+```
+```{r}
+fake_data2<-cbind(fake_data, contrasts(fake_data$IV))
+fake_data2
+lm(DV~c1+c2+c3,data=fake_data2)
+summary(lm(DV~c1+c2+c3,data=fake_data2))
+```
+
+```{r}
+grand_means+
+  contrasts(fake_data$IV)[,1]*3.5+
+  contrasts(fake_data$IV)[,2]*.5+
+  contrasts(fake_data$IV)[,3]*.5
+```
+
+```{r}
+fake_data<-tibble(IV=factor(c("A","B","C","D")),
+                  DV=c(43,22,52,104))
+
+contrasts(fake_data$IV)
+
+c1<-c(-1,-1,1,1)
+c2<-c(1,-1,0,0)
+c3<-c(0,0,-1,1)
+my_contrasts<-cbind(c1,c2,c3)
+
+contrasts(fake_data$IV)<-my_contrasts
+
+fake_data2<-cbind(fake_data,contrasts(fake_data$IV))
+
+(lm(DV~c1+c2+c3,data=fake_data2))
+summary(lm(DV~c1+c2+c3,data=fake_data2))
+
+grand_means<-rep(mean(fake_data$DV),4)
+grand_means
+
+grand_means +
+  contrasts(fake_data$IV)[,1]*22.75+
+  contrasts(fake_data$IV)[,2]*10.5+
+  contrasts(fake_data$IV)[,3]*26.00
 ```
 
