@@ -255,3 +255,85 @@ type_I_errors%>%
   sum()/10000
 ```
 
+```{r}
+
+library(tibble)
+romeo_juliet2<-tibble(subjects=1:20,
+                     group=factor(rep(c("Context before",
+                                 "Partial context",
+                                 "Context after",
+                                 "Without context"), each=5)),
+                     comprehension=c(5,9,8,4,9,
+                                     5,4,3,5,4,
+                                     2,4,5,4,1,
+                                     3,3,2,4,3
+                                     ))
+
+contrasts(romeo_juliet2$group)
+
+c1<-c(1,1,1,-3)
+c2<-c(0,0,1,-1)
+c3<-c(3,-1,-1,-1)
+c4<-c(1,-1,0,0)
+
+new_contrasts<-cbind(c1,c2,c3,c4)
+cor(new_contrasts)
+
+contrasts(romeo_juliet2$group)<-c1
+summary.aov(aov(comprehension~group,romeo_juliet2),
+            split=list(group=list("c1"=1)))
+
+contrasts(romeo_juliet2$group)<-c2
+summary.aov(aov(comprehension~group,romeo_juliet2),
+            split=list(group=list("c2"=1)))
+
+contrasts(romeo_juliet2$group)<-c3
+summary.aov(aov(comprehension~group,romeo_juliet2),
+            split=list(group=list("c3"=1)))
+```
+
+
+```{r}
+romeo_juliet2<-tibble(subjects=1:20,
+                     group=rep(c("Context before",
+                                 "Partial context",
+                                 "Context after",
+                                 "Without context"), each=5),
+                     comprehension=c(5,9,8,4,9,
+                                     5,4,3,5,4,
+                                     2,4,5,4,1,
+                                     3,3,2,4,3
+                                     ))
+
+romeo_juliet2$group<-factor(romeo_juliet2$group,
+                            levels=c("Context before",
+                                     "Partial context",
+                                     "Context after",
+                                     "Without context"))
+
+contrasts(romeo_juliet2$group)
+
+c1<-c(1,1,1,-3)
+c2<-c(0,0,1,-1)
+c3<-c(3,-1,-1,-1)
+c4<-c(1,-1,0,0)
+
+new_contrasts<-cbind(c1,c2,c3,c4)
+cor(new_contrasts)
+
+contrasts(romeo_juliet2$group)<-c1
+summary.aov(aov(comprehension~group,romeo_juliet2),
+            split=list(group=list("c1"=1)))
+
+contrasts(romeo_juliet2$group)<-c2
+summary.aov(aov(comprehension~group,romeo_juliet2),
+            split=list(group=list("c2"=1)))
+
+contrasts(romeo_juliet2$group)<-c3
+summary.aov(aov(comprehension~group,romeo_juliet2),
+            split=list(group=list("c3"=1)))
+```
+
+
+
+
