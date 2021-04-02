@@ -175,3 +175,83 @@ grand_means +
   contrasts(fake_data$IV)[,3]*26.00
 ```
 
+```{r}
+library(tibble)
+sim_data<-tibble(DV=rnorm(6*100,0,1),
+                 IV=factor(rep(1:6,each=100))
+)
+
+c1<-c(1,-1,0,0,0,0)
+c2<-c(0,0,1,-1,0,0)
+c3<-c(0,0,0,0,1,-1)
+c4<-c(-1-1,2,2,-1,-1)
+c5<-c(1,1,0,0,-1,-1)
+
+orth_contrasts<-cbind(c1,c2,c3,c4,c5)
+
+cor(orth_contrasts)
+
+contrasts(sim_data$IV)<-orth_contrasts
+
+(sim_data_output<-summary.aov(aov(DV~IV, sim_data), split=list(IV=list("c1"=1,
+                                                "c2" = 2,
+                                                "c3"= 3,
+                                                "c4"= 4,
+                                                "c5" = 5)
+                                        )))
+sim_data_output[[1]]$'Pr(>F)'[1:6]
+```
+
+```{r}
+all_sim_data<-tibble()
+
+for(i in 1:10000){
+  sim_data<-tibble(DV=rnorm(6*100,0,1),
+                   IV=factor(rep(1:6,each=100)))
+  
+  contrasts(sim_data$IV)<-orth_contrasts
+  
+  sim_output<-summary.aov(aov(DV~IV,sim_data),
+                          split=list(IV=list("c1"=1,
+                                             "c2"=2,
+                                             "c3"=3,
+                                             "c4"=4,
+                                             "c5"=5)))
+  
+  sim_results<-tibble(type=c("omnibus",rep("contrast",5)),
+                      p_values=sim_output[[1]]$`Pr(>F)`[1:6],
+                      sim_num=rep(i,6))
+  
+  all_sim_data<-rbind(all_sim_data,sim_results)
+}
+```
+
+
+```{r}
+library(dplyr)
+
+type_I_errors<-all_sim_data%>%
+  mutate(type_I=p_values<.05)%>%
+  group_by(type,sim_num)%>%
+    summarize(counts=sum(type_I))%>%
+  group_by(type,counts)%>%
+    summarize(type_I_frequency=sum(counts))
+
+knitr::kable(type_I_errors)
+    
+```
+
+```{r}
+type_I_errors%>%
+  filter(type=="omnibus",
+         counts==1)%>%
+  pull(type_I_frequency)/10000
+```
+```{r}
+type_I_errors%>%
+  filter(type=="contrast",
+         counts>0)%>%
+  pull(type_I_frequency)%>%
+  sum()/10000
+```
+
