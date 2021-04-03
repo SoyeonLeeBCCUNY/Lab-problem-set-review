@@ -257,8 +257,9 @@ type_I_errors%>%
 
 ```{r}
 
+#DO NOT ESTABLISH GROUP AS FACTOR IN A CONDENSED FORM AS IT YEILDS THE WRONG ANSWER
 library(tibble)
-romeo_juliet2<-tibble(subjects=1:20,
+romeo_juliet<-tibble(subjects=1:20,
                      group=factor(rep(c("Context before",
                                  "Partial context",
                                  "Context after",
@@ -269,32 +270,38 @@ romeo_juliet2<-tibble(subjects=1:20,
                                      3,3,2,4,3
                                      ))
 
-contrasts(romeo_juliet2$group)
+contrasts(romeo_juliet$group)
 
-c1<-c(1,1,1,-3)
+c1<-c(1,1,-1,-1)
 c2<-c(0,0,1,-1)
-c3<-c(3,-1,-1,-1)
-c4<-c(1,-1,0,0)
+c3<-c(1,-1,0,0)
 
-new_contrasts<-cbind(c1,c2,c3,c4)
+new_contrasts<-cbind(c1,c2,c3)
 cor(new_contrasts)
 
-contrasts(romeo_juliet2$group)<-c1
-summary.aov(aov(comprehension~group,romeo_juliet2),
+contrasts(romeo_juliet$group)<-new_contrasts
+
+summary.aov(aov(comprehension~group, romeo_juliet), split=list(group=list("c1"=1, "c2" = 2, "c3"= 3)))
+
+contrasts(romeo_juliet$group)<-c1
+summary.aov(aov(comprehension~group,romeo_juliet),
             split=list(group=list("c1"=1)))
 
-contrasts(romeo_juliet2$group)<-c2
-summary.aov(aov(comprehension~group,romeo_juliet2),
+contrasts(romeo_juliet$group)<-c2
+summary.aov(aov(comprehension~group,romeo_juliet),
             split=list(group=list("c2"=1)))
 
-contrasts(romeo_juliet2$group)<-c3
-summary.aov(aov(comprehension~group,romeo_juliet2),
+contrasts(romeo_juliet$group)<-c3
+summary.aov(aov(comprehension~group,romeo_juliet),
             split=list(group=list("c3"=1)))
+
+
 ```
 
 
 ```{r}
-romeo_juliet2<-tibble(subjects=1:20,
+#ESTABLISH THE FACTOR IN A SEPARATE FORM LIKE BELOW
+romeo_juliet<-tibble(subjects=1:20,
                      group=rep(c("Context before",
                                  "Partial context",
                                  "Context after",
@@ -304,36 +311,94 @@ romeo_juliet2<-tibble(subjects=1:20,
                                      2,4,5,4,1,
                                      3,3,2,4,3
                                      ))
+romeo_juliet$group<-factor(romeo_juliet$group,
+                           levels=c("Context before",
+                                    "Partial context",
+                                    "Context after",
+                                    "Without context"))
 
-romeo_juliet2$group<-factor(romeo_juliet2$group,
-                            levels=c("Context before",
-                                     "Partial context",
-                                     "Context after",
-                                     "Without context"))
 
-contrasts(romeo_juliet2$group)
+contrasts(romeo_juliet$group)
 
-c1<-c(1,1,1,-3)
+c1<-c(1,1,-1,-1)
 c2<-c(0,0,1,-1)
-c3<-c(3,-1,-1,-1)
-c4<-c(1,-1,0,0)
+c3<-c(1,-1,0,0)
 
-new_contrasts<-cbind(c1,c2,c3,c4)
+new_contrasts<-cbind(c1,c2,c3)
 cor(new_contrasts)
 
-contrasts(romeo_juliet2$group)<-c1
-summary.aov(aov(comprehension~group,romeo_juliet2),
+contrasts(romeo_juliet$group)<-new_contrasts
+
+summary.aov(aov(comprehension~group, romeo_juliet), split=list(group=list("c1"=1, "c2" = 2, "c3"= 3)))
+
+contrasts(romeo_juliet$group)<-c1
+summary.aov(aov(comprehension~group,romeo_juliet),
             split=list(group=list("c1"=1)))
 
-contrasts(romeo_juliet2$group)<-c2
-summary.aov(aov(comprehension~group,romeo_juliet2),
+contrasts(romeo_juliet$group)<-c2
+summary.aov(aov(comprehension~group,romeo_juliet),
             split=list(group=list("c2"=1)))
 
-contrasts(romeo_juliet2$group)<-c3
-summary.aov(aov(comprehension~group,romeo_juliet2),
+contrasts(romeo_juliet$group)<-c3
+summary.aov(aov(comprehension~group,romeo_juliet),
             split=list(group=list("c3"=1)))
+
 ```
 
+```{r}
+romeo_juliet<-tibble(subjects=1:20,
+                     group=rep(c("Context before",
+                                 "Partial context",
+                                 "Context after",
+                                 "Without context"),each=5),
+                     comprehension=c(5,9,8,4,9,
+                                     5,4,3,5,4,
+                                     2,4,5,4,1,
+                                     3,3,2,4,3))
 
+romeo_juliet$group<-factor(romeo_juliet$group,
+                           levels=c("Context before",
+                                    "Partial context",
+                                    "Context after",
+                                    "Without context"))
 
+#traditional approach
+
+contrasts(romeo_juliet$group)
+
+c1<-c(3,-1,-1,-1)
+c2<-c(1,1,-1,-1)
+c3<-c(1,-1,1,-1)
+
+new_contrasts<-cbind(c1,c2,c3)
+cor(new_contrasts)
+
+contrasts(romeo_juliet$group)<-c1
+summary.aov(aov(comprehension~group,romeo_juliet),
+            split=list(group=list("contrast 1"=1)))
+
+contrasts(romeo_juliet$group)<-c2
+summary.aov(aov(comprehension~group,romeo_juliet),
+            split=list(group=list("contrast 2"=1)))
+
+contrasts(romeo_juliet$group)<-c3
+summary.aov(aov(comprehension~group,romeo_juliet),
+            split=list(group=list("contrast 3"=1)))
+```
+
+```{r}
+#modern approach
+romeo_juliet<-romeo_juliet%>%
+  dplyr::mutate(c1=rep(c(3,-1,-1,-1),each=5),
+                c2=rep(c(1,1,-1,-1),each=5),
+                c3=rep(c(1,-1,1,-1),each=5))
+
+summary(lm(comprehension~c1+c2+c3,data=romeo_juliet))
+```
+
+```{r}
+library(ppcor)
+spcor(romeo_juliet[,3:6])$estimate^2
+
+```
 
