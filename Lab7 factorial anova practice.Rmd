@@ -1,0 +1,97 @@
+---
+title: "Lab 7 factorial anova practice"
+author: "Soyeon Lee"
+date: "4/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tibble)
+factorial_data<-tibble (A=factor(rep(c("A1","A2"),each=10)),
+                        B=factor(rep(c("B1","B2"),times=10)),
+                        DV=rnorm(10*2, 0,1))
+```
+
+
+```{r}
+aov_out<-aov(DV~A*B,data=factorial_data)
+summary(aov_out)
+```
+
+```{r}
+model.tables(aov_out,type="means")
+
+```
+
+```{r}
+#don't know what the resulting values are
+model.tables(aov_out)
+```
+
+```{r}
+n<-12
+factorial_data<-tibble(A=factor(rep(c("A1","A2"),each=n)),
+                       B=factor(rep(rep(c("B1","B2"),each=n/2),times=2)),
+                       C=factor(rep(c("C1","C2"),times=n)),
+                       DV=rnorm(n*2, 0,1))
+
+summary(aov(DV~A*B*C,data=factorial_data))
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+
+n<-10
+factorial_data<-tibble(A=factor(rep(c("A1","A2"),each=n)),
+                       B=factor(rep(c("B1","B2"),times=n)),
+                       DV=rnorm(n*2,0,1))
+
+factorial_data%>%
+  group_by(A,B)%>%
+  summarize(mean_DV=mean(DV))
+
+factorial_data%>%
+  ggplot(aes(x=A,y=DV,group=B,fill=B))+
+    geom_bar(stat="summary",fun="mean", position="dodge")+
+    geom_point(position=position_dodge(width=0.5))
+```
+
+```{r}
+A<-factorial_data%>%
+    group_by(A)%>%
+    summarize(mean_DV=mean(DV))%>%
+    ggplot(aes(x=A, y=mean_DV))+
+      geom_bar(stat="identity", position="dodge")+
+      ggtitle("Main effect A")
+
+B<-factorial_data%>%
+    group_by(B)%>%
+    summarize(mean_DV=mean(DV))%>%
+    ggplot(aes(x=B, y=mean_DV))+
+      geom_bar(stat="identity", position="dodge")+
+      ggtitle("Main effect B")
+
+AB<-factorial_data%>%
+    group_by(A,B)%>%
+    summarize(mean_DV=mean(DV))%>%
+    ggplot(aes(x=A, y=mean_DV, fill=B))+
+      geom_bar(stat="identity", position="dodge")+
+      ggtitle("AXB Interaction")
+
+(A+B)/AB
+
+```
+
+```{r}
+aov_out<-aov(DV~A*B,data=factorial_data)
+summary(aov_out)
+
+model.tables(aov_out,type="means")
+```
+
