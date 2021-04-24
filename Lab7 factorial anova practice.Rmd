@@ -94,4 +94,94 @@ summary(aov_out)
 
 model.tables(aov_out,type="means")
 ```
+```{r}
+library(ggplot2)
 
+a1b1<-c(11,9,7,11,12,7,12,11,10,10)
+a1b2<-c(12,12,7,9,9,10,12,10,7,12)
+a2b1<-c(13,18,19,13,8,15,13,9,8,14)
+a2b2<-c(13,21,20,15,17,14,13,14,16,7)
+a3b1<-c(17,20,22,13,21,16,23,19,20,19)
+a3b2<-c(32,31,27,30,29,30,33,25,25,28)
+
+recall_data<-tibble::tibble(words_recalled=c(a1b1,a1b2,
+                                     a2b1,a2b2,
+                                     a3b1,a3b2),
+                    A=rep(c("12 words",
+                            "24 words",
+                            "48 words"), each=20),
+                    B=rep(rep(c("Free recall",
+                                "Cued recall"),each=10),3))
+
+ggplot(recall_data,aes(x=A, y=words_recalled, group=B, linetype=B))+
+  geom_point(stat="summary",fun="mean")+
+  geom_line(stat="summary",fun="mean")
+
+```
+
+```{r}
+aov_out<-aov(words_recalled~A*B,data=recall_data)
+summary(aov_out)
+model.tables(aov_out,type="means")
+```
+
+```{r}
+library(tibble)
+A1<-c(127,121,117,109,107,101,98,94,97,89)
+A2<-c(117,109,113,113,108,104,95,93,96,92)
+A3<-c(111,111,111,101,99,91,95,89,89,83)
+A4<-c(108,100,100,92,92,90,87,77,89,85)
+
+random_data<-tibble(scores=c(A1,A2,A3,A4),
+                    A=factor(rep(1:4,each=10)),
+                    B=factor(rep(rep(1:5,each=2),times=4))
+                    )
+
+aov.lm<-lm(formula=scores~A*B, data=random_data)
+car::Anova(aov.lm,type=2)
+```
+
+```{r}
+save_sim<-tibble()
+
+for (i in 1:10000){
+  
+  n<-10
+  factorial_data<-tibble(A=factor(rep(c("L1","L2"),each=n)),
+                         B=factor(rep(c("L1","L2"),times=n)),
+                         DV=rnorm(n*2,0,1))
+  
+  output<-summary(aov(DV~A*B,data=factorial_data))
+  
+  sim_tibble<-tibble(p_vals=output[[1]]$`Pr(>F)`[1:3],
+                     effect=c("A","B","AxB"),
+                     sim=rep(i,3))
+  
+  save_sim<-rbind(save_sim, sim_tibble)
+}
+```
+
+
+```{r}
+library(dplyr)
+
+type_I_errors<-save_sim%>%
+  filter(p_vals<.05)%>%
+  group_by(sim)%>%
+  count()
+
+dim(type_I_errors)[2]/10000
+```
+```{r}
+save_sim%>%
+  group_by(effect)%>%
+  summarize(false_rejection=length(p_vals[p_vals<.05])/10000)
+
+```
+
+```{r}
+a<-rbinom(10000,3,.05)
+length(a[a>0])/10000
+
+```
+ 
