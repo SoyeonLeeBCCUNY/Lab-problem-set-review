@@ -1,0 +1,179 @@
+---
+title: "Lab 8 contrasts analyses"
+author: "Soyeon Lee"
+date: "4/29/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tibble)
+library(ggplot2)
+library(patchwork)
+
+grand_mean<-50
+A<-c(0,5,10,15,20,25,50)
+B<-c(0,5,-15)
+AB<-rep(0,length(A)*length(B))
+
+model_data<-tibble()
+for(i in 1:length(A)){
+  for(j in 1:length(B)){
+    IVA<-i
+    IVB<-j
+    DV<-grand_mean+A[i]+B[j]+AB[(i-1)*length(B)+j]
+    sc_GM<-grand_mean
+    sc_A<-A[i]
+    sc_B<-B[j]
+    sc_AB<-AB[(i-1)*length(B)+j]
+    row_entry<-tibble(IVA,IVB,DV,
+                      sc_GM,sc_A,sc_B,sc_AB)
+    model_data<-rbind(model_data,row_entry)
+  }
+}
+knitr::kable(model_data)
+```
+
+```{r}
+bar_graph<-ggplot(model_data,
+                  aes(y=DV,
+                      x=as.factor(IVA),
+                      fill=as.factor(IVB)))+
+  geom_bar(stat="identity",position="dodge")
+
+line_graph<-ggplot(model_data,
+                   aes(x=IVA,
+                       y=DV,
+                       linetype=as.factor(IVB)))+
+  geom_line()+
+  geom_point()
+
+bar_graph/line_graph
+```
+
+```{r}
+library(tibble)
+library(ggplot2)
+
+grand_mean<-10
+A<-c(-5,0,5)
+B<-c(-5,0,5)
+AB<-rep(0,length(A)*length(B))
+
+model_data<-tibble()
+for(i in 1:length(A)){
+  for (j in 1:length(B)){
+    IVA<-i
+    IVB<-j
+    DV<-grand_mean+A[i]+B[j]+AB[(i-1)*length(B)+j]
+    sc_GM<-grand_mean
+    sc_A<-A[i]
+    sc_B<-B[j]
+    sc_AB<-AB[(i-1)*length(B)+j]
+    row_entry<-tibble(IVA,IVB,DV,
+                      sc_GM,sc_A,sc_B,sc_AB)
+    model_data<-rbind(model_data,row_entry)
+  }
+}
+
+knitr::kable(model_data)
+```
+
+```{r}
+library(patchwork)
+
+bar_graph<-ggplot(model_data,
+                  aes(x=as.factor(IVA),
+                      y=DV,
+                      fill=as.factor(IVB)))+
+              geom_bar(stat="identity", position="dodge")
+
+line_graph<-ggplot(model_data,
+                   aes(x=IVA,
+                       y=DV,
+                       linetype=as.factor(IVB)))+
+              geom_point()+
+              geom_line()
+
+bar_graph/line_graph
+
+```
+
+```{r}
+grand_mean<-500
+A<-c(-100,0,100)
+B<-c(100,-100)
+AB<-c(0,0,0,-100,0,-200)
+
+model_data<-tibble()
+for(i in 1:length(A)){
+  for(j in 1:length(B)){
+    IVA<-i
+    IVB<-j
+    DV<-grand_mean+A[i]+B[j]+AB[(i-1)*length(B)+j]
+    sc_GM<-grand_mean
+    sc_A<-A[i]
+    sc_B<-B[j]
+    sc_AB<-AB[(i-1)*length(B)+j]
+    row_entry<-tibble(IVA,IVB,DV,
+                      sc_GM,sc_A,sc_B,sc_AB)
+    model_data<-rbind(model_data,row_entry)
+  }
+}
+knitr::kable(model_data)
+```
+```{r}
+bar_graph<-ggplot(model_data,
+                  aes(x=as.factor(IVA),
+                      y=DV,
+                      fill=as.factor(IVB)))+
+  geom_bar(stat="identity",position="dodge")
+
+line_graph<-ggplot(model_data,
+                   aes(x=IVA,
+                       y=DV,
+                       linetype=as.factor(IVB)))+
+  geom_point()+
+  geom_line()
+
+bar_graph/line_graph
+```
+
+```{r}
+
+N<-40
+
+A_pvalue<-c()
+B_pvalue<-c()
+AB_pvalue<-c()
+
+for(i in 1:1000){
+  IVA<-rep(rep(c("1","2"),each=2),N)
+  IVB<-rep(rep(c("1","2"),times=2),N)
+  DV<-c(replicate(N,c(rnorm(1,0,1),
+                      rnorm(1,0,1),
+                      rnorm(1,.5,1),
+                      rnorm(1,.5,1))))
+  
+  sim_df<-data.frame(IVA,IVB,DV)
+
+  aov_results<-summary(aov(DV~IVA*IVB,sim_df))
+  A_pvalue[i]<-aov_results[[1]]$`Pr(>F)`[1]
+  B_pvalue[i]<-aov_results[[1]]$`Pr(>F)`[2]
+  AB_pvalue[i]<-aov_results[[1]]$`Pr(>F)`[3]
+}
+
+length(A_pvalue[A_pvalue<.05])/1000
+length(B_pvalue[B_pvalue<.05])/1000
+length(AB_pvalue[AB_pvalue<.05])/1000
+
+
+```
+
+
+
+
+
